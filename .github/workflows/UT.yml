@@ -1,0 +1,45 @@
+name: CppUnit CI (Windows)
+
+on:
+  push:
+    branches: [ main dev ]
+  pull_request:
+    branches: [ main dev ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: Настройка Visual Studio окружения
+        uses: microsoft/setup-msbuild@v1.1
+        
+      - name: Сборка CppUnit (Debug x86)
+        run: msbuild ./AdoptTools/CppUnit/src/cppunit/cppunit.vcxproj /p:Configuration=Debug
+        
+      - name: Сборка CppUnit (Release x86)
+        run: msbuild ./AdoptTools/CppUnit/src/cppunit/cppunit.vcxproj /p:Configuration=Release
+
+      - name: Сборка проекта (Debug x86)
+        run: msbuild ./Plousios/UT/UT.vcxproj /p:Configuration=Debug
+        
+      - name: Сборка проекта (Release x86)
+        run: msbuild ./Plousios/UT/UT.vcxproj /p:Configuration=Release
+
+      - name: Запуск CppUnit тестов
+        run: |
+          cd .\Plousios\UT\_Out_\UT.Debug
+          .\UT.exe
+          cd ..\UT.Release
+          .\UT.exe
+          
+      - name: Проверка результатов тестов (Debug x86)
+        if: ${{ always() }}
+        run: ./Plousios/UT_CheckLog.bat .\Plousios\UT\_Out_\UT.Debug\UT_log.xml
+
+      - name: Проверка результатов тестов (Release x86)
+        if: ${{ always() }}
+        run: ./Plousios/UT_CheckLog.bat .\Plousios\UT\_Out_\UT.Release\UT_log.xml
