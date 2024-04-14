@@ -1,9 +1,19 @@
 #include "stdafx.h"
 #include "MainWindow.h"
+#include "MainWindowDefines.h"
 #include <QToolBar>
 #include <Qlabel>
 #include <QPushButton>
 #include <QToolButton>
+
+/*
+    Plousios source code. Tak172. 2024.
+
+    @Name:			MainWindow.cpp
+    @Created:		14.04.2024
+    @Programmer:	Timofey Kromachev
+
+    Implementations. */
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -45,17 +55,52 @@ void MainWindow::OnClickExit()
 {
 }
 
+void MainWindow::OnChangeCurrency( Currency cur )
+{
+    QPushButton * usdBN = this->findChild<QPushButton *>( USD_NAME );
+    QPushButton * btcBN = this->findChild<QPushButton *>( BTC_NAME );
+    QPushButton * rubBN = this->findChild<QPushButton *>( RUB_NAME );
+    Q_ASSERT( usdBN && btcBN && rubBN );
+
+    usdBN->setStyleSheet( "background-color: #100E19" );
+    btcBN->setStyleSheet( "background-color: #100E19" );
+    rubBN->setStyleSheet( "background-color: #100E19" );
+
+    switch ( cur )
+    {
+        case Currency::USD:
+        usdBN->setStyleSheet( "background-color: #7d7d7d" );
+        break;
+        case Currency::BTC:
+        btcBN->setStyleSheet( "background-color: #7d7d7d" );
+        break;
+        case Currency::RUB:
+        rubBN->setStyleSheet( "background-color: #7d7d7d" );
+        break;
+    }
+}
+
 void MainWindow::MakeAuxBar()
 {
     QToolBar * auxTB = new QToolBar;
     auxTB->setStyleSheet(
+        "QToolBar {"
+            "border: 1px solid #d3dae3;"
+            "border-right: none;"
+            "border-left: none;"
+            "border-top: none;"
+        "}"
+        "QToolBar::separator {"
+            "background-color: #d3dae3;"
+            "width: 1px;"
+            "margin: 0px;"
+        "}"
         "QToolBar QToolButton {"
             "min-height: 60px;"
+            "min-width: 60px;"
             "max-height: 60px;"
-            "font: 75 8pt \"Comic Sans MS\";"
-        "}"
-        "QToolBar QLabel {"
-            "font: 75 8pt \"Comic Sans MS\";"
+            "spacing: 50px;"
+            "margin-left: 3px;"
         "}"
     );
     auxTB->setOrientation( Qt::Horizontal );
@@ -69,8 +114,8 @@ void MainWindow::MakeAuxBar()
     iconTL->setStyleSheet(
         "margin-top: 10px;"
         "margin-bottom: 10px;"
-        "margin-left: 32px;"
-        "margin-right: 28px;"
+        "margin-left: 20px;"
+        "margin-right: 20px;"
         "min-width: 40px;"
         "max-width: 40px;"
         "min-height: 40px;"
@@ -83,8 +128,30 @@ void MainWindow::MakeAuxBar()
     auxTB->addWidget( spacer1WT );
 
     QPushButton * usdBN = new QPushButton( "USD", this );
+    usdBN->setObjectName( USD_NAME );
+    usdBN->setFixedWidth( 80 );
     QPushButton * btcBN = new QPushButton( "BTC", this );
+    btcBN->setObjectName( BTC_NAME );
+    btcBN->setFixedWidth( 80 );
     QPushButton * rubBN = new QPushButton( "RUB", this );
+    rubBN->setObjectName( RUB_NAME );
+    rubBN->setFixedWidth( 80 );
+
+    connect( usdBN, &QPushButton::clicked, this, [ this ] ()
+    {
+        OnChangeCurrency( Currency::USD );
+    } );
+
+    connect( btcBN, &QPushButton::clicked, this, [ this ] ()
+    {
+        OnChangeCurrency( Currency::BTC );
+    } );
+
+    connect( rubBN, &QPushButton::clicked, this, [ this ] ()
+    {
+        OnChangeCurrency( Currency::RUB );
+    } );
+
     auxTB->addWidget( usdBN );
     auxTB->addWidget( btcBN );
     auxTB->addWidget( rubBN );
@@ -102,13 +169,11 @@ void MainWindow::MakeAuxBar()
     auxTB->addWidget( balanceTL );
 
     QToolButton * notificationTB = new QToolButton( this );
-    notificationTB->setIcon( QIcon( ":/Plousios/notification" ) );
+    notificationTB->setIcon( QIcon( ":/Plousios/notification_l" ) );
     notificationTB->setFixedSize( 60, 60 );
     auxTB->addWidget( notificationTB );
 
-    auxTB->addSeparator();
-
-    QAction * userAN = new QAction( QIcon( ":/Plousios/user" ),
+    QAction * userAN = new QAction( QIcon( ":/Plousios/user_l" ),
         QString::fromStdWString( L"Профиль" ), this );
     auxTB->addAction( userAN );
 
@@ -122,18 +187,24 @@ void MainWindow::MakeNavigationBar()
 {
     QToolBar * navigationTB = new QToolBar;
     navigationTB->setStyleSheet(
+        "QToolBar {"
+        "border: 1px solid #d3dae3;"
+        "border-bottom: none;"
+        "border-left: none;"
+        "border-top: none;"
+        "}"
         "QToolBar QToolButton {"
-            "padding-left: 10px;"
-            "padding-right: 10px;"
-            "min-width: 80px;"
-            "max-width: 80px;"
-            "min-height: 80px;"
-            "max-height: 80px;"
+            "margin-left: 2px;"
+            "margin-right: 2px;"
+            "margin-top: 1px;"
+            "margin-bottom: 1px;"
+            "min-width: 70px;"
+            "max-width: 70px;"
+            "min-height: 70px;"
+            "max-height: 70px;"
         "}"
         "QToolBar QWidget {"
-            "margin-top: 5px;"
-            "margin-bottom: 5px;"
-            "font: 75 8pt \"Comic Sans MS\";"
+            "margin-bottom: 3px;"
         "}"
     );
     navigationTB->setOrientation( Qt::Vertical );
@@ -141,15 +212,15 @@ void MainWindow::MakeNavigationBar()
     navigationTB->setIconSize( QSize( 40, 40 ) );
     navigationTB->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
 
-    QAction * tradingAN = new QAction( QIcon( ":/Plousios/trading" ),
+    QAction * tradingAN = new QAction( QIcon( ":/Plousios/trading_l" ),
         QString::fromStdWString( L"Трейдинг" ), this );
-    QAction * historyAN = new QAction( QIcon( ":/Plousios/history" ),
+    QAction * historyAN = new QAction( QIcon( ":/Plousios/history_l" ),
         QString::fromStdWString( L"История" ), this );
-    QAction * portfolioAN = new QAction( QIcon( ":/Plousios/portfolio" ),
-        QString::fromStdWString( L"Мои активы" ), this );
-    QAction * settingsAN = new QAction( QIcon( ":/Plousios/settings" ),
+    QAction * portfolioAN = new QAction( QIcon( ":/Plousios/portfolio_l" ),
+        QString::fromStdWString( L"Активы" ), this );
+    QAction * settingsAN = new QAction( QIcon( ":/Plousios/settings_l" ),
         QString::fromStdWString( L"Настройки" ), this );
-    QAction * exitAN = new QAction( QIcon( ":/Plousios/exit" ),
+    QAction * exitAN = new QAction( QIcon( ":/Plousios/exit_l" ),
         QString::fromStdWString( L"Выход" ), this );
 
     connect( tradingAN, &QAction::triggered, this, &MainWindow::OnClickTrading );

@@ -1,12 +1,20 @@
 <RCC>
     <qresource prefix="/Plousios">
-        <file alias="exit">Images/exit.png</file>
-        <file alias="history">Images/history.png</file>
-        <file alias="notification">Images/notification.png</file>
-        <file alias="portfolio">Images/portfolio.png</file>
-        <file alias="settings">Images/settings.png</file>
-        <file alias="trading">Images/trading.png</file>
         <file alias="logo">Images/logo.png</file>
-        <file alias="user">Images/user.png</file>
+        <file alias="Obit">QSS/Obit.qss</file>
+        <file alias="exit_l">Images/exit_l.png</file>
+        <file alias="history_l">Images/history_l.png</file>
+        <file alias="notification_d">Images/notification_d.png</file>
+        <file alias="notification_l">Images/notification_l.png</file>
+        <file alias="portfolio_d">Images/portfolio_d.png</file>
+        <file alias="portfolio_l">Images/portfolio_l.png</file>
+        <file alias="settings_d">Images/settings_d.png</file>
+        <file alias="settings_l">Images/settings_l.png</file>
+        <file alias="trading_d">Images/trading_d.png</file>
+        <file alias="trading_l">Images/trading_l.png</file>
+        <file alias="user_d">Images/user_d.png</file>
+        <file alias="user_l">Images/user_l.png</file>
+        <file alias="exit_d">Images/exit_d.png</file>
+        <file alias="history_d">Images/history_d.png</file>
     </qresource>
 </RCC>
