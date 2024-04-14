@@ -23,24 +23,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="PlousiosApp.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-    <QtUic Include="PlousiosApp.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtMoc Include="PlousiosApp.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="PlousiosApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,5 +37,20 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="MainWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="MainWindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Resource.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

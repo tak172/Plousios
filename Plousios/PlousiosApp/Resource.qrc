@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/Plousios">
+        <file alias="exit">Images/exit.png</file>
+        <file alias="history">Images/history.png</file>
+        <file alias="notification">Images/notification.png</file>
+        <file alias="portfolio">Images/portfolio.png</file>
+        <file alias="settings">Images/settings.png</file>
+        <file alias="trading">Images/trading.png</file>
+        <file alias="logo">Images/logo.png</file>
+    </qresource>
+</RCC>
