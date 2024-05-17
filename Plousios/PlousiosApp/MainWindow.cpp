@@ -8,8 +8,6 @@
 
 // -------------------------------------------
 #include "TradingPageWidget.h"
-#include <QtSql> 
-#include <QtCore>
 // -------------------------------------------
 
 /*
@@ -28,26 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
     MakeNavigationBar();
     TradingPageWidget * _trading_pageWT = new TradingPageWidget( this );
     setCentralWidget( _trading_pageWT );
-    
-
-    QSqlDatabase db = QSqlDatabase::addDatabase( "QPSQL" );
-    db.setHostName( "localhost" );      // Хост PostgreSQL
-    db.setDatabaseName( "plousios" );   // Имя вашей базы данных
-    db.setUserName( "Timofey" );        // Имя пользователя PostgreSQL
-    db.setPassword( "Maksem2005" );     // Пароль PostgreSQL
-    bool ok = db.open();
-
-
 }
 
 MainWindow::~MainWindow()
 {}
 
 void MainWindow::OnClickUser()
-{
-}
-
-void MainWindow::OnClickNotification()
 {
 }
 
@@ -63,38 +47,9 @@ void MainWindow::OnClickTrading()
 {
 }
 
-void MainWindow::OnClickSettings()
-{
-}
-
 void MainWindow::OnClickExit()
 {
     this->close();
-}
-
-void MainWindow::OnChangeCurrency( Currency cur )
-{
-    QPushButton * usdBN = this->findChild<QPushButton *>( USD_NAME );
-    QPushButton * btcBN = this->findChild<QPushButton *>( BTC_NAME );
-    QPushButton * rubBN = this->findChild<QPushButton *>( RUB_NAME );
-    Q_ASSERT( usdBN && btcBN && rubBN );
-
-    usdBN->setStyleSheet( "background-color: #100E19" );
-    btcBN->setStyleSheet( "background-color: #100E19" );
-    rubBN->setStyleSheet( "background-color: #100E19" );
-
-    switch ( cur )
-    {
-        case Currency::USD:
-        usdBN->setStyleSheet( "background-color: #7d7d7d" );
-        break;
-        case Currency::BTC:
-        btcBN->setStyleSheet( "background-color: #7d7d7d" );
-        break;
-        case Currency::RUB:
-        rubBN->setStyleSheet( "background-color: #7d7d7d" );
-        break;
-    }
 }
 
 void MainWindow::MakeAuxBar()
@@ -144,39 +99,6 @@ void MainWindow::MakeAuxBar()
     spacer1WT->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
     auxTB->addWidget( spacer1WT );
 
-    QPushButton * usdBN = new QPushButton( "USD", this );
-    usdBN->setObjectName( USD_NAME );
-    usdBN->setFixedWidth( 80 );
-    QPushButton * btcBN = new QPushButton( "BTC", this );
-    btcBN->setObjectName( BTC_NAME );
-    btcBN->setFixedWidth( 80 );
-    QPushButton * rubBN = new QPushButton( "RUB", this );
-    rubBN->setObjectName( RUB_NAME );
-    rubBN->setFixedWidth( 80 );
-
-    connect( usdBN, &QPushButton::clicked, this, [ this ] ()
-    {
-        OnChangeCurrency( Currency::USD );
-    } );
-
-    connect( btcBN, &QPushButton::clicked, this, [ this ] ()
-    {
-        OnChangeCurrency( Currency::BTC );
-    } );
-
-    connect( rubBN, &QPushButton::clicked, this, [ this ] ()
-    {
-        OnChangeCurrency( Currency::RUB );
-    } );
-
-    auxTB->addWidget( usdBN );
-    auxTB->addWidget( btcBN );
-    auxTB->addWidget( rubBN );
-
-    QWidget * spacer2WT = new QWidget( this );
-    spacer2WT->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
-    auxTB->addWidget( spacer2WT );
-
     QLabel * balanceTL = new QLabel( "BALANCE:\n$0.00", this);
     balanceTL->setAlignment( Qt::AlignCenter );
     balanceTL->setStyleSheet(
@@ -185,18 +107,11 @@ void MainWindow::MakeAuxBar()
     );
     auxTB->addWidget( balanceTL );
 
-    QToolButton * notificationTB = new QToolButton( this );
-    notificationTB->setIcon( QIcon( ":/Plousios/notification_l" ) );
-    notificationTB->setFixedSize( 60, 60 );
-    auxTB->addWidget( notificationTB );
-
     QAction * userAN = new QAction( QIcon( ":/Plousios/user_l" ),
         QString::fromStdWString( L"Профиль" ), this );
     auxTB->addAction( userAN );
 
     connect( userAN, &QAction::triggered, this, &MainWindow::OnClickUser );
-    connect( notificationTB, &QToolButton::clicked, this, &MainWindow::OnClickNotification );
-    
     addToolBar( Qt::TopToolBarArea, auxTB );
 }
 
@@ -235,15 +150,12 @@ void MainWindow::MakeNavigationBar()
         QString::fromStdWString( L"История" ), this );
     QAction * portfolioAN = new QAction( QIcon( ":/Plousios/portfolio_l" ),
         QString::fromStdWString( L"Активы" ), this );
-    QAction * settingsAN = new QAction( QIcon( ":/Plousios/settings_l" ),
-        QString::fromStdWString( L"Настройки" ), this );
     QAction * exitAN = new QAction( QIcon( ":/Plousios/exit_l" ),
         QString::fromStdWString( L"Выход" ), this );
 
     connect( tradingAN, &QAction::triggered, this, &MainWindow::OnClickTrading );
     connect( historyAN, &QAction::triggered, this, &MainWindow::OnClickHistory );
     connect( portfolioAN, &QAction::triggered, this, &MainWindow::OnClickPortfolio );
-    connect( settingsAN, &QAction::triggered, this, &MainWindow::OnClickSettings );
     connect( exitAN, &QAction::triggered, this, &MainWindow::OnClickExit );
 
     navigationTB->addAction( tradingAN );
@@ -252,7 +164,6 @@ void MainWindow::MakeNavigationBar()
     QWidget * spacerWT = new QWidget( this );
     spacerWT->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
     navigationTB->addWidget( spacerWT );
-    navigationTB->addAction( settingsAN );
     navigationTB->addAction( exitAN );
     addToolBar( Qt::LeftToolBarArea, navigationTB );
 }

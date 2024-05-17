@@ -8,14 +8,3 @@
     @Programmer:	Timofey Kromachev
 
     Implementations. */
-
-#define USD_NAME "USD_BN"
-#define BTC_NAME "BTC_BN"
-#define RUB_NAME "RUB_BN"
-
-enum class Currency
-{
-    USD,
-    BTC,
-    RUB
-};

@@ -26,17 +26,12 @@ private slots:
 
     // слоты действий верхней панели
     void OnClickUser();
-    void OnClickNotification();
 
     // слоты действий боковой панели
     void OnClickPortfolio();
     void OnClickHistory();
     void OnClickTrading();
-    void OnClickSettings();
     void OnClickExit();
-
-    // слоты изменения валюты
-    void OnChangeCurrency( Currency );
 
 private:
     void MakeAuxBar();          // создание верхней вспомогательной панели
