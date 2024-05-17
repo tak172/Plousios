@@ -10,7 +10,6 @@
     Implementations. */
 
 #include <QMainWindow>
-#include "ui_MainWindow.h"
 
 enum class Currency;
 
@@ -42,6 +41,4 @@ private slots:
 private:
     void MakeAuxBar();          // создание верхней вспомогательной панели
     void MakeNavigationBar();   // создание навигационной панели
-
-    Ui::MainWindowClass ui;
 };

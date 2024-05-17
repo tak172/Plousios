@@ -6,6 +6,12 @@
 #include <QPushButton>
 #include <QToolButton>
 
+// -------------------------------------------
+#include "TradingPageWidget.h"
+#include <QtSql> 
+#include <QtCore>
+// -------------------------------------------
+
 /*
     Plousios source code. Tak172. 2024.
 
@@ -18,10 +24,20 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    ui.setupUi(this);
-
     MakeAuxBar();
     MakeNavigationBar();
+    TradingPageWidget * _trading_pageWT = new TradingPageWidget( this );
+    setCentralWidget( _trading_pageWT );
+    
+
+    QSqlDatabase db = QSqlDatabase::addDatabase( "QPSQL" );
+    db.setHostName( "localhost" );      // Хост PostgreSQL
+    db.setDatabaseName( "plousios" );   // Имя вашей базы данных
+    db.setUserName( "Timofey" );        // Имя пользователя PostgreSQL
+    db.setPassword( "Maksem2005" );     // Пароль PostgreSQL
+    bool ok = db.open();
+
+
 }
 
 MainWindow::~MainWindow()
@@ -53,6 +69,7 @@ void MainWindow::OnClickSettings()
 
 void MainWindow::OnClickExit()
 {
+    this->close();
 }
 
 void MainWindow::OnChangeCurrency( Currency cur )

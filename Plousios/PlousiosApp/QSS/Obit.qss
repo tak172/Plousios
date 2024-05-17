@@ -123,7 +123,10 @@ QToolButton:pressed{
 	padding: 2px;
 }
 
-
+QSplitter::handle {
+   height: 6px;
+   background-color: #cccccc;
+}
 
 /*-----QLineEdit-----*/
 QLineEdit

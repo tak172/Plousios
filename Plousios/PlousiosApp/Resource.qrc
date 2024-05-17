@@ -16,5 +16,26 @@
         <file alias="user_l">Images/user_l.png</file>
         <file alias="exit_d">Images/exit_d.png</file>
         <file alias="history_d">Images/history_d.png</file>
+        <file alias="search_l">Images/search.png</file>
+        <file alias="br">Images/br.png</file>
+        <file alias="rus">Images/rus.png</file>
+        <file alias="sn">Images/sn.png</file>
+        <file alias="uk">Images/uk.png</file>
+        <file alias="us">Images/us.png</file>
+        <file alias="all">Images/all.png</file>
+        <file alias="can">Images/can.png</file>
+        <file alias="ch">Images/ch.png</file>
+        <file alias="eg">Images/eg.png</file>
+        <file alias="fr">Images/fr.png</file>
+        <file alias="it">Images/it.png</file>
+        <file alias="jp">Images/jp.png</file>
+        <file alias="cmb">Images/cmb.png</file>
+        <file alias="est">Images/est.png</file>
+        <file alias="gm">Images/gm.png</file>
+        <file alias="icd">Images/icd.png</file>
+        <file alias="inz">Images/inz.png</file>
+        <file alias="isr">Images/isr.png</file>
+        <file alias="ptg">Images/ptg.png</file>
+        <file alias="uae">Images/uae.png</file>
     </qresource>
 </RCC>
