@@ -1,57 +1,84 @@
 #include "stdafx.h"
-#include "TradingPageWidget.h"
-#include <qlayout.h>
+#include "BasicPageWidget.h"
+#include "FilterWidget.h"
+#include "qcustomplot.h"
+#include "AssetsWidget.h"
+#include "HistoryWidget.h"
+#include "TradingWidget.h"
+#include "DatabaseManager.h"
+
+#include <QLayout>
 
 /*
     Plousios source code. Tak172. 2024.
 
-    @Name:			TradingPageWidget.cpp
+    @Name:			BasicPageWidget.cpp
     @Created:		15.04.2024
     @Programmer:	Timofey Kromachev
 
     Implementations. */
 
-TradingPageWidget::TradingPageWidget( QWidget * parent )
+BasicPageWidget::BasicPageWidget( unsigned user_id, QWidget * parent )
     : QSplitter( Qt::Vertical, parent )
 {
     _plotWT = new QCustomPlot( this );
     InitPlot();
 
-    _tradingTW = new QTableWidget( this );
-    _findWT = new TradingFindWidget( this );
-    InitTop();
+    _assetsWT = new AssetsWidget( user_id, this );
+    _tradingWT = new TradingWidget( user_id, this );
+    _historyWT = new HistoryWidget( user_id, this );
+    _findWT = new FilterWidget( this );
+    _findWT->setMinimumSize( 300, 300 );
 
     QHBoxLayout * topHL = new QHBoxLayout( this );
     topHL->addWidget( _findWT );
-    topHL->addWidget( _tradingTW );
+    topHL->addWidget( _assetsWT );
+    topHL->addWidget( _historyWT );
+    topHL->addWidget( _tradingWT );
+
     QWidget * topWT = new QWidget( this );
     topWT->setLayout( topHL );
 
     addWidget( topWT );
     addWidget( _plotWT );
+
+    connect( _tradingWT, &TradingWidget::ClickAsset, this, &BasicPageWidget::OnClickAsset );
+    connect( _tradingWT, &TradingWidget::ClickBuy, this, &BasicPageWidget::OnBuyAsset );
+    connect( _historyWT, &HistoryWidget::ClickAsset, this, &BasicPageWidget::OnClickAsset );
+    connect( _assetsWT, &AssetsWidget::ClickAsset, this, &BasicPageWidget::OnClickAsset );
 }
 
-TradingPageWidget::~TradingPageWidget()
+BasicPageWidget::~BasicPageWidget()
 {}
 
-void TradingPageWidget::UpdatePlot( const QVector<PlotPoint> & plot_points )
+void BasicPageWidget::UpdatePages()
+{
+    _tradingWT->UpdateAssets();
+    _historyWT->UpdateHistory();
+    _assetsWT->UpdateAssets();
+
+    //_findWT;   // update
+    UpdatePlot( { } );
+}
+
+void BasicPageWidget::UpdatePlot( const QVector<DatabaseProcessing::AssetPriceData> & asset_prices )
 {
     _plotWT->clearGraphs();
-    if ( plot_points.isEmpty() )
+    if ( asset_prices.isEmpty() )
         return;
 
-    double start_price = plot_points.first()._price;
-    double start_date_time = plot_points.first()._date_time.toSecsSinceEpoch() / 60;
+    double start_price = asset_prices.first()._price;
+    double start_date_time = asset_prices.first()._timestamp.toSecsSinceEpoch() / 60;
 
     QVector<double> price_points;
     QVector<double> date_time_points;
-    for ( const PlotPoint & point : plot_points )
+    for ( const DatabaseProcessing::AssetPriceData & point : asset_prices )
     {
         price_points.append( point._price - start_price );
-        date_time_points.append( ( point._date_time.toSecsSinceEpoch() / 60 ) - start_date_time );
+        date_time_points.append( ( point._timestamp.toSecsSinceEpoch() / 60 ) - start_date_time );
     }
 
-    for ( int i = 1; i < plot_points.size(); ++i )
+    for ( int i = 1; i < asset_prices.size(); ++i )
     {
         QCPGraph * graph = _plotWT->addGraph();
         graph->addData( date_time_points[ i - 1 ], price_points[ i - 1 ] );
@@ -65,48 +92,50 @@ void TradingPageWidget::UpdatePlot( const QVector<PlotPoint> & plot_points )
     QCPAxisRect * volume_axis_rect = qobject_cast<QCPAxisRect *>( _plotWT->plotLayout()->element( 1, 0 ) );
     QCPBars * volume_pos = new QCPBars( volume_axis_rect->axis( QCPAxis::atBottom ), volume_axis_rect->axis( QCPAxis::atLeft ) );
     QCPBars * volume_neg = new QCPBars( volume_axis_rect->axis( QCPAxis::atBottom ), volume_axis_rect->axis( QCPAxis::atLeft ) );
-    for ( int i = 1; i < plot_points.size(); ++i )
+    for ( int i = 1; i < asset_prices.size(); ++i )
         ( price_points[ i - 1 ] > price_points[ i ] ? volume_neg : volume_pos )->addData(
             date_time_points[ i ], qAbs( price_points[ i ] ) );
 
-    volume_pos->setWidth( ( date_time_points.back() - date_time_points.first() ) / ( plot_points.size() * 1.5 ) );
+    volume_pos->setWidth( ( date_time_points.back() - date_time_points.first() ) / ( asset_prices.size() * 1.5 ) );
     volume_pos->setPen( Qt::NoPen );
     volume_pos->setBrush( QColor( 100, 180, 110 ) );
 
-    volume_neg->setWidth( ( date_time_points.back() - date_time_points.first() ) / ( plot_points.size() * 1.5 ) );
+    volume_neg->setWidth( ( date_time_points.back() - date_time_points.first() ) / ( asset_prices.size() * 1.5 ) );
     volume_neg->setPen( Qt::NoPen );
     volume_neg->setBrush( QColor( 180, 90, 90 ) );
 
     _plotWT->rescaleAxes();
 }
 
-void TradingPageWidget::ClearPlot()
+void BasicPageWidget::ClearPlot()
 {
     _plotWT->clearGraphs();
     _plotWT->clearPlottables();
     _plotWT->replot();
 }
 
-void TradingPageWidget::InitTop()
+void BasicPageWidget::OnClickAsset( unsigned id )
 {
-    _tradingTW->setColumnCount( 5 );
-    QStringList horizontal_headers;
-    horizontal_headers << WToQ( L"Название" ) << WToQ( L"Изменение" )
-        << WToQ( L"Цена" ) << WToQ( L"Цена покупки" ) << WToQ( L"Купить" );
-    _tradingTW->setHorizontalHeaderLabels( horizontal_headers );
-
-    _tradingTW->setColumnWidth( 1, 300 );
-    for ( int i = 2; i < _tradingTW->columnCount(); ++i )
-        _tradingTW->setColumnWidth( i, 200 );
-
-    _tradingTW->setEditTriggers( QAbstractItemView::NoEditTriggers );
-    _tradingTW->horizontalHeader()->setSectionResizeMode( QHeaderView::Fixed );
-    _tradingTW->horizontalHeader()->setSectionResizeMode( 0, QHeaderView::Stretch );
-
-    _findWT->setMinimumSize( 300, 300 );
+    auto db_manager = DatabaseProcessing::DatabaseManager::Instance();
+    QVector<DatabaseProcessing::AssetPriceData> prices_data = db_manager->GetAssetPrices( id );
+    UpdatePlot( prices_data );
 }
 
-void TradingPageWidget::InitPlot()
+void BasicPageWidget::SetActivePage( PageType page_type )
+{
+    UpdatePages();
+
+    _assetsWT->setVisible( page_type == PageType::Assets );
+    _historyWT->setVisible( page_type == PageType::History );
+    _tradingWT->setVisible( page_type == PageType::Trading );
+}
+
+void BasicPageWidget::OnBuyAsset( unsigned id )
+{
+    emit BuyAsset( id );
+}
+
+void BasicPageWidget::InitPlot()
 {
     _plotWT->setMinimumSize( 900, 300 );
     _plotWT->xAxis->setBasePen( QPen( QColor( "#d3dae3" ), 1 ) );

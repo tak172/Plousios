@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "MainWindow.h"
-#include "MainWindowDefines.h"
+#include "BasicPageWidget.h"
+#include "UserWindow.h"
+#include "DatabaseManager.h"
+
 #include <QToolBar>
 #include <Qlabel>
 #include <QPushButton>
 #include <QToolButton>
-
-// -------------------------------------------
-#include "TradingPageWidget.h"
-// -------------------------------------------
+#include <QMessageBox>
 
 /*
     Plousios source code. Tak172. 2024.
@@ -19,13 +19,17 @@
 
     Implementations. */
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow( DatabaseProcessing::UserData * user_data, QWidget * parent )
+    : _user_data( user_data ), QMainWindow( parent )
 {
+    resize( 1500, 800 );
     MakeAuxBar();
     MakeNavigationBar();
-    TradingPageWidget * _trading_pageWT = new TradingPageWidget( this );
-    setCentralWidget( _trading_pageWT );
+    _basic_pageWT = new BasicPageWidget( _user_data->_id, this );
+    _basic_pageWT->SetActivePage( BasicPageWidget::PageType::Trading );
+    setCentralWidget( _basic_pageWT );
+
+    connect( _basic_pageWT, &BasicPageWidget::BuyAsset, this, &MainWindow::OnBuyAsset );
 }
 
 MainWindow::~MainWindow()
@@ -33,23 +37,55 @@ MainWindow::~MainWindow()
 
 void MainWindow::OnClickUser()
 {
+    UserWindow userWD( _user_data, this );
+    if ( userWD.exec() == QDialog::Accepted )
+        balanceTL->setText( WToQ( L"BALANCE:\n$%1" ).arg( QString::number( _user_data->_balance, 'f', 2 ) ) );
 }
 
 void MainWindow::OnClickPortfolio()
 {
+    _basic_pageWT->SetActivePage( BasicPageWidget::PageType::Assets );
 }
 
 void MainWindow::OnClickHistory()
 {
+    _basic_pageWT->SetActivePage( BasicPageWidget::PageType::History );
 }
 
 void MainWindow::OnClickTrading()
 {
+    _basic_pageWT->SetActivePage( BasicPageWidget::PageType::Trading );
 }
 
 void MainWindow::OnClickExit()
 {
     this->close();
+}
+
+void MainWindow::OnBuyAsset( unsigned id )
+{
+    auto db_manager = DatabaseProcessing::DatabaseManager::Instance();
+    DatabaseProcessing::AssetData asset_data;
+    asset_data._id = id;
+    if ( db_manager->GetAsset( asset_data ) == true )
+    {
+        if ( db_manager->BuyAsset( asset_data, _user_data ) == true )
+        {
+            balanceTL->setText( WToQ( L"BALANCE:\n$%1" ).arg( QString::number( _user_data->_balance, 'f', 2 ) ) );
+            _basic_pageWT->UpdatePages();
+            return;
+        }
+    }
+
+    QMessageBox message_box;
+    message_box.setWindowTitle( WToQ( L"Ошибка подключения." ) );
+    message_box.setText( WToQ( L"Ошибка проведения транзакции. Проверьте подключение." ) );
+    message_box.setIcon( QMessageBox::Warning );
+    message_box.setStandardButtons( QMessageBox::Ok );
+    if ( QAbstractButton * ok_button = message_box.button( QMessageBox::Ok ) )
+        ok_button->setMinimumWidth( 100 );
+
+    message_box.exec();
 }
 
 void MainWindow::MakeAuxBar()
@@ -99,7 +135,8 @@ void MainWindow::MakeAuxBar()
     spacer1WT->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
     auxTB->addWidget( spacer1WT );
 
-    QLabel * balanceTL = new QLabel( "BALANCE:\n$0.00", this);
+    QString balance_str = WToQ( L"BALANCE:\n$%1" ).arg( QString::number( _user_data->_balance, 'f', 2 ) );
+    balanceTL = new QLabel( balance_str, this);
     balanceTL->setAlignment( Qt::AlignCenter );
     balanceTL->setStyleSheet(
         "margin-left: 30px;"

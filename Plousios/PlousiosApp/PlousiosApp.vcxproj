@@ -249,7 +249,11 @@
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</TreatWarningAsError>
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</TreatWarningAsError>
     </ClCompile>
-    <ClCompile Include="DBManager.cpp" />
+    <ClCompile Include="AddUserWindow.cpp" />
+    <ClCompile Include="AssetsWidget.cpp" />
+    <ClCompile Include="AuthentificationWindow.cpp" />
+    <ClCompile Include="DatabaseManager.cpp" />
+    <ClCompile Include="HistoryWidget.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -258,16 +262,24 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TradingFindWidget.cpp" />
-    <ClCompile Include="TradingPageWidget.cpp" />
+    <ClCompile Include="FilterWidget.cpp" />
+    <ClCompile Include="BasicPageWidget.cpp" />
+    <ClCompile Include="TradingWidget.cpp" />
+    <ClCompile Include="UserWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="TradingFindWidget.h" />
-    <QtMoc Include="TradingPageWidget.h" />
+    <ClInclude Include="AddUserWindow.h" />
+    <ClInclude Include="AuthentificationWindow.h" />
+    <ClInclude Include="UserWindow.h" />
+    <QtMoc Include="TradingWidget.h" />
+    <QtMoc Include="FilterWidget.h" />
+    <QtMoc Include="BasicPageWidget.h" />
     <QtMoc Include="MainWindow.h" />
     <QtMoc Include="..\..\AdoptTools\qcustomplot\qcustomplot.h" />
-    <ClInclude Include="DBManager.h" />
-    <ClInclude Include="MainWindowDefines.h" />
+    <QtMoc Include="AssetsWidget.h" />
+    <ClInclude Include="DatabaseHelper.h" />
+    <ClInclude Include="DatabaseManager.h" />
+    <QtMoc Include="HistoryWidget.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

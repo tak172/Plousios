@@ -1,4 +1,5 @@
 #pragma once
+#include <QMainWindow>
 
 /*
     Plousios source code. Tak172. 2024.
@@ -9,17 +10,20 @@
 
     Implementations. */
 
-#include <QMainWindow>
+namespace DatabaseProcessing
+{
+    struct UserData;
+}
 
-enum class Currency;
-
+class QLabel;
+class BasicPageWidget;
 // класс главного окна приложения
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow( QWidget * parent = nullptr );
+    MainWindow( DatabaseProcessing::UserData *, QWidget * parent = nullptr );
     ~MainWindow();
 
 private slots:
@@ -33,7 +37,15 @@ private slots:
     void OnClickTrading();
     void OnClickExit();
 
+private slots:
+    void OnBuyAsset( unsigned id );
+
 private:
     void MakeAuxBar();          // создание верхней вспомогательной панели
     void MakeNavigationBar();   // создание навигационной панели
+
+    QLabel * balanceTL;
+
+    BasicPageWidget * _basic_pageWT;
+    DatabaseProcessing::UserData * _user_data;
 };
