@@ -109,8 +109,8 @@ void TradingWidget::BuyAsset( unsigned asset_id, double price )
     }
 
     QMessageBox message_box;
-    message_box.setWindowTitle( WToQ( L"Ошибка стоимости" ) );
-    message_box.setText( WToQ( L"Ошибка проведения транзакции. Цена актива изменилась." ) );
+    message_box.setWindowTitle( WToQ( L"Ошибка транзакции" ) );
+    message_box.setText( WToQ( L"Ошибка проведения транзакции. Повторите попыдку позже." ) );
     message_box.setIcon( QMessageBox::Warning );
     message_box.setStandardButtons( QMessageBox::Ok );
     if ( QAbstractButton * ok_button = message_box.button( QMessageBox::Ok ) )

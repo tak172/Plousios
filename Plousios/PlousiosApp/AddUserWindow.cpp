@@ -7,6 +7,15 @@
 #include <QLabel>
 #include <QGridLayout>
 
+/*
+    Plousios source code. Tak172. 2024.
+
+    @Name:			AddUserWindow.cpp
+    @Created:		23.05.2024
+    @Programmer:	Timofey Kromachev
+
+    Implementations. */
+
 AddUserWindow::AddUserWindow( QWidget * parent )
     : QDialog( parent )
 {

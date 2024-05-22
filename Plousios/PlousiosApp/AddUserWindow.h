@@ -1,6 +1,15 @@
 #pragma once
 #include <QDialog>
 
+/*
+    Plousios source code. Tak172. 2024.
+
+    @Name:			AddUserWindow.h
+    @Created:		23.05.2024
+    @Programmer:	Timofey Kromachev
+
+    Implementations. */
+
 class QPushButton;
 class QLineEdit;
 class QLabel;

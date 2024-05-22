@@ -9,10 +9,14 @@
 #include <QFile>
 #include <QAbstractButton>
 #include <QThread>
+#include <QIcon>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    QIcon appIcon( ":/Plousios/logo" );
+    QApplication::setWindowIcon( appIcon );
 
     QFile styleFile( ":/Plousios/Obit" );
     styleFile.open( QFile::ReadOnly );

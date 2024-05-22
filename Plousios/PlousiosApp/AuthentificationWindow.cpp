@@ -10,6 +10,15 @@
 #include <QEvent>
 #include <QMouseEvent>
 
+/*
+    Plousios source code. Tak172. 2024.
+
+    @Name:			AuthentificationWindow.cpp
+    @Created:		23.05.2024
+    @Programmer:	Timofey Kromachev
+
+    Implementations. */
+
 AuthentificationWindow::AuthentificationWindow( QWidget * parent )
     : _user_data( nullptr ), QDialog( parent )
 {

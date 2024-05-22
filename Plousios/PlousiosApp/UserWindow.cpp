@@ -11,6 +11,15 @@
 #include <QMouseEvent>
 #include <QDoubleValidator>
 
+/*
+    Plousios source code. Tak172. 2024.
+
+    @Name:			UserWindow.cpp
+    @Created:		23.05.2024
+    @Programmer:	Timofey Kromachev
+
+    Implementations. */
+
 UserWindow::UserWindow( DatabaseProcessing::UserData * user_data, QWidget * parent )
     : _user_data( user_data ), QDialog( parent )
 {

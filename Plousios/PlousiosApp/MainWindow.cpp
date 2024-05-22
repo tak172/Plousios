@@ -22,6 +22,7 @@
 MainWindow::MainWindow( DatabaseProcessing::UserData * user_data, QWidget * parent )
     : _user_data( user_data ), QMainWindow( parent )
 {
+    setWindowTitle( "Plousios" );
     resize( 1500, 800 );
     MakeAuxBar();
     MakeNavigationBar();

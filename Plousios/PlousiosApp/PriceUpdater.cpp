@@ -5,6 +5,15 @@
 #include <QTimer>
 #include <QThread>
 
+/*
+    Plousios source code. Tak172. 2024.
+
+    @Name:			PriceUpdater.cpp
+    @Created:		23.05.2024
+    @Programmer:	Timofey Kromachev
+
+    Implementations. */
+
 PriceUpdater::PriceUpdater( QObject * parent ) 
     : QObject( parent )
 { }
@@ -14,7 +23,7 @@ void PriceUpdater::StartWork()
     while ( QThread::currentThread()->isInterruptionRequested() == false )
     {
         DoWork();
-        QThread::sleep( 30 );
+        QThread::sleep( 60 );
     }
 }
 

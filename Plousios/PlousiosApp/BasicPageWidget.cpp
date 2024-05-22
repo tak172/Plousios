@@ -62,19 +62,35 @@ void BasicPageWidget::UpdatePages()
 
 void BasicPageWidget::UpdatePlot( const QVector<DatabaseProcessing::AssetPriceData> & asset_prices )
 {
-    _plotWT->clearGraphs();
+    ClearPlot();
+
     if ( asset_prices.isEmpty() )
         return;
 
-    double start_price = asset_prices.first()._price;
+    double min_price = DBL_MAX;
+    for ( const auto & asset : asset_prices )
+    {
+        if ( asset._price < min_price )
+            min_price = asset._price;
+    }
+
     double start_date_time = asset_prices.first()._timestamp.toSecsSinceEpoch() / 60;
 
     QVector<double> price_points;
     QVector<double> date_time_points;
     for ( const DatabaseProcessing::AssetPriceData & point : asset_prices )
     {
-        price_points.append( point._price - start_price );
+        price_points.append( point._price - min_price + 1 );
         date_time_points.append( ( point._timestamp.toSecsSinceEpoch() / 60 ) - start_date_time );
+    }
+
+    int count = 0;
+    for ( int i = 1; i < date_time_points.size(); ++i )
+    {
+        if ( date_time_points[ i ] + count == date_time_points[ i - 1 ] )
+            ++count;
+
+        date_time_points[ i ] += count;
     }
 
     for ( int i = 1; i < asset_prices.size(); ++i )
@@ -93,17 +109,18 @@ void BasicPageWidget::UpdatePlot( const QVector<DatabaseProcessing::AssetPriceDa
     QCPBars * volume_neg = new QCPBars( volume_axis_rect->axis( QCPAxis::atBottom ), volume_axis_rect->axis( QCPAxis::atLeft ) );
     for ( int i = 1; i < asset_prices.size(); ++i )
         ( price_points[ i - 1 ] > price_points[ i ] ? volume_neg : volume_pos )->addData(
-            date_time_points[ i ], qAbs( price_points[ i ] ) );
+            date_time_points[ i ], price_points[ i ] );
 
-    volume_pos->setWidth( ( date_time_points.back() - date_time_points.first() ) / ( asset_prices.size() * 1.5 ) );
+    volume_pos->setWidth( 0.95 );
     volume_pos->setPen( Qt::NoPen );
     volume_pos->setBrush( QColor( 100, 180, 110 ) );
 
-    volume_neg->setWidth( ( date_time_points.back() - date_time_points.first() ) / ( asset_prices.size() * 1.5 ) );
+    volume_neg->setWidth( 0.95 );
     volume_neg->setPen( Qt::NoPen );
     volume_neg->setBrush( QColor( 180, 90, 90 ) );
 
     _plotWT->rescaleAxes();
+    _plotWT->replot();
 }
 
 void BasicPageWidget::ClearPlot()

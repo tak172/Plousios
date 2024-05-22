@@ -3,6 +3,15 @@
 
 #include "DatabaseHelper.h"
 
+/*
+    Plousios source code. Tak172. 2024.
+
+    @Name:			AuthentificationWindow.h
+    @Created:		23.05.2024
+    @Programmer:	Timofey Kromachev
+
+    Implementations. */
+
 class QPushButton;
 class QLineEdit;
 class QLabel;
