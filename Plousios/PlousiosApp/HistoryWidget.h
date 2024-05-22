@@ -1,6 +1,8 @@
 #pragma once
 #include <QTableWidget>
 
+#include "FilterHelper.h"
+
 /*
     Plousios source code. Tak172. 2024.
 
@@ -19,6 +21,7 @@ public:
     ~HistoryWidget();
 
     void UpdateHistory();
+    void FilterHistory( const Filter & );
 
 signals:
     void ClickAsset( unsigned );

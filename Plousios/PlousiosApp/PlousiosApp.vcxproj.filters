@@ -47,6 +47,9 @@
     <Filter Include="Windows\AddUserWindow">
       <UniqueIdentifier>{434ac008-2238-4985-b469-6ced96849b3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Database\PriceUpdater">
+      <UniqueIdentifier>{76dd93f9-e062-41ae-bfd0-017ac0763bc2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\AdoptTools\qcustomplot\qcustomplot.cpp">
@@ -84,6 +87,9 @@
     <ClCompile Include="AddUserWindow.cpp">
       <Filter>Windows\AddUserWindow</Filter>
     </ClCompile>
+    <ClCompile Include="PriceUpdater.cpp">
+      <Filter>Database\PriceUpdater</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -101,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="AddUserWindow.h">
       <Filter>Windows\AddUserWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="FilterHelper.h">
+      <Filter>Widgets\FilterWidget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +133,9 @@
     </QtMoc>
     <QtMoc Include="TradingWidget.h">
       <Filter>Widgets\TradingWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="PriceUpdater.h">
+      <Filter>Database\PriceUpdater</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

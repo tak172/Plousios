@@ -38,7 +38,7 @@ private slots:
     void OnClickExit();
 
 private slots:
-    void OnBuyAsset( unsigned id );
+    void OnBuyAsset();
 
 private:
     void MakeAuxBar();          // создание верхней вспомогательной панели

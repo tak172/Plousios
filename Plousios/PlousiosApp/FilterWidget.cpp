@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "FilterWidget.h"
+
 #include <QLabel>
 #include <QLayout>
 #include <QListWidget>
@@ -19,7 +20,7 @@
 namespace DBP = DatabaseProcessing;
 
 FilterWidget::FilterWidget( QWidget * parent )
-    : QWidget( parent )
+    : QWidget( parent ), _used_country( DatabaseProcessing::Countries::ALL )
 {
     setFixedWidth( 300 );
     QVBoxLayout * mainVL = new QVBoxLayout( this );
@@ -77,13 +78,19 @@ FilterWidget::FilterWidget( QWidget * parent )
     mainVL->addWidget( countriesLW );
     setLayout( mainVL );
 
-
+    connect( _searchLE, &QLineEdit::textChanged, this, &FilterWidget::OnChanged );
 }
 
 FilterWidget::~FilterWidget()
 {}
 
-void FilterWidget::OnSelectCountry( DBP::Countries )
+void FilterWidget::OnSelectCountry( DBP::Countries country )
 {
+    _used_country = country;
+    OnChanged();
+}
 
+void FilterWidget::OnChanged()
+{
+    emit FilterChanged( { _used_country, _searchLE->text() } );
 }

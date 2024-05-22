@@ -43,9 +43,10 @@ BasicPageWidget::BasicPageWidget( unsigned user_id, QWidget * parent )
     addWidget( _plotWT );
 
     connect( _tradingWT, &TradingWidget::ClickAsset, this, &BasicPageWidget::OnClickAsset );
-    connect( _tradingWT, &TradingWidget::ClickBuy, this, &BasicPageWidget::OnBuyAsset );
+    connect( _tradingWT, &TradingWidget::UpdateBalance, this, &BasicPageWidget::OnBuyAsset );
     connect( _historyWT, &HistoryWidget::ClickAsset, this, &BasicPageWidget::OnClickAsset );
     connect( _assetsWT, &AssetsWidget::ClickAsset, this, &BasicPageWidget::OnClickAsset );
+    connect( _findWT, &FilterWidget::FilterChanged, this, &BasicPageWidget::OnFilterChanged );
 }
 
 BasicPageWidget::~BasicPageWidget()
@@ -56,8 +57,6 @@ void BasicPageWidget::UpdatePages()
     _tradingWT->UpdateAssets();
     _historyWT->UpdateHistory();
     _assetsWT->UpdateAssets();
-
-    //_findWT;   // update
     UpdatePlot( { } );
 }
 
@@ -130,9 +129,17 @@ void BasicPageWidget::SetActivePage( PageType page_type )
     _tradingWT->setVisible( page_type == PageType::Trading );
 }
 
-void BasicPageWidget::OnBuyAsset( unsigned id )
+void BasicPageWidget::OnBuyAsset()
 {
-    emit BuyAsset( id );
+    emit UpdateBalance();
+}
+
+void BasicPageWidget::OnFilterChanged( const Filter & filter )
+{
+    _tradingWT->FilterAssets( filter );
+    _historyWT->FilterHistory( filter );
+    _assetsWT->FilterAssets( filter );
+    UpdatePlot( { } );
 }
 
 void BasicPageWidget::InitPlot()

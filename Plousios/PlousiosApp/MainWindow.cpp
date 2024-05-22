@@ -29,7 +29,7 @@ MainWindow::MainWindow( DatabaseProcessing::UserData * user_data, QWidget * pare
     _basic_pageWT->SetActivePage( BasicPageWidget::PageType::Trading );
     setCentralWidget( _basic_pageWT );
 
-    connect( _basic_pageWT, &BasicPageWidget::BuyAsset, this, &MainWindow::OnBuyAsset );
+    connect( _basic_pageWT, &BasicPageWidget::UpdateBalance, this, &MainWindow::OnBuyAsset );
 }
 
 MainWindow::~MainWindow()
@@ -62,30 +62,15 @@ void MainWindow::OnClickExit()
     this->close();
 }
 
-void MainWindow::OnBuyAsset( unsigned id )
+void MainWindow::OnBuyAsset()
 {
     auto db_manager = DatabaseProcessing::DatabaseManager::Instance();
-    DatabaseProcessing::AssetData asset_data;
-    asset_data._id = id;
-    if ( db_manager->GetAsset( asset_data ) == true )
-    {
-        if ( db_manager->BuyAsset( asset_data, _user_data ) == true )
-        {
-            balanceTL->setText( WToQ( L"BALANCE:\n$%1" ).arg( QString::number( _user_data->_balance, 'f', 2 ) ) );
-            _basic_pageWT->UpdatePages();
-            return;
-        }
-    }
-
-    QMessageBox message_box;
-    message_box.setWindowTitle( WToQ( L"Ошибка подключения." ) );
-    message_box.setText( WToQ( L"Ошибка проведения транзакции. Проверьте подключение." ) );
-    message_box.setIcon( QMessageBox::Warning );
-    message_box.setStandardButtons( QMessageBox::Ok );
-    if ( QAbstractButton * ok_button = message_box.button( QMessageBox::Ok ) )
-        ok_button->setMinimumWidth( 100 );
-
-    message_box.exec();
+    DatabaseProcessing::UserData * user_data = db_manager->GetUserData( _user_data->_id );
+    _user_data->_balance = user_data->_balance;
+    delete user_data;
+    balanceTL->setText( WToQ( L"BALANCE:\n$%1" ).arg( QString::number( _user_data->_balance, 'f', 2 ) ) );
+    _basic_pageWT->UpdatePages();
+    return;
 }
 
 void MainWindow::MakeAuxBar()

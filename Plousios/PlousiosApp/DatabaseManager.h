@@ -1,7 +1,9 @@
 #pragma once
+#include "DatabaseHelper.h"
+
 #include <QtSql> 
 #include <QtCore>
-#include "DatabaseHelper.h"
+#include <mutex>
 
 /*
     Plousios source code. Tak172. 2024.
@@ -20,7 +22,7 @@ namespace DatabaseProcessing
         static DatabaseManager * Instance();
         ~DatabaseManager();
 
-        bool IsOpen() { return db.isOpen(); }
+        bool IsOpen() { return _db.isOpen(); }
 
         UserData * GetUserData( const QString & nickname );
         UserData * GetUserData( unsigned id );
@@ -31,17 +33,24 @@ namespace DatabaseProcessing
         QVector<AssetData> GetAssetsList();
         QVector<AssetPriceData> GetAssetPrices( unsigned id );
         bool GetAsset( AssetData & asset_data );
-        bool BuyAsset( AssetData & asset_data, UserData * buyer );
-        bool PutForSale( unsigned id );
+        bool BuyAsset( unsigned asset_id, unsigned buyer_id, double price );
+        bool PutForSale( unsigned id, double price );
 
         QString GetCountryName( Countries country );
         
         QVector<TradeData> GetUserTradesHistory( unsigned id );
 
+        bool UpdatePrices();
+
     private:
         DatabaseManager();
+        DatabaseManager( const DatabaseManager & ) = delete;
+        DatabaseManager & operator=( const DatabaseManager & ) = delete;
 
-        QSqlDatabase db;
-        static DatabaseManager * instance;
+        QSqlDatabase _db; // <-- protected by _mutex
+        std::mutex _mutex;
+
+        static DatabaseManager * _instance; // <-- protected by _instance_mutex
+        static std::mutex _instance_mutex;
     };
 }

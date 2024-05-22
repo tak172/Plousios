@@ -2,7 +2,9 @@
 
 #include <QWidget>
 #include <QLineEdit>
+
 #include "DatabaseHelper.h"
+#include "FilterHelper.h"
 
 /*
     Plousios source code. Tak172. 2024.
@@ -22,10 +24,15 @@ public:
     FilterWidget( QWidget * parent = nullptr );
     ~FilterWidget();
 
+signals:
+    void FilterChanged( const Filter & );
+
 public slots:
     // слот выбора станы
     void OnSelectCountry( DatabaseProcessing::Countries );
+    void OnChanged();
 
 private:
     QLineEdit * _searchLE; // ввод шаблона имени акции
+    DatabaseProcessing::Countries _used_country;
 };

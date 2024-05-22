@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MainWindow.h"
+#include "PriceUpdater.h"
 #include "DatabaseManager.h"
 #include "AuthentificationWindow.h"
 
@@ -7,10 +8,11 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QAbstractButton>
+#include <QThread>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
     QFile styleFile( ":/Plousios/Obit" );
     styleFile.open( QFile::ReadOnly );
@@ -30,18 +32,30 @@ int main(int argc, char *argv[])
             ok_button->setMinimumWidth( 100 );
 
         message_box.exec();
-        a.quit();
+        app.quit();
         exit( 1 );
     }
+
+    PriceUpdater * updater = new PriceUpdater;
+    QThread * updater_thread = new QThread;
+    updater->moveToThread( updater_thread );
+
+    QObject::connect( updater_thread, &QThread::started, updater, &PriceUpdater::StartWork );
+    QObject::connect( &app, &QCoreApplication::aboutToQuit, updater_thread, &QThread::quit );
+    QObject::connect( updater, &PriceUpdater::ConnectionLoss, updater_thread, &QThread::quit );
+    QObject::connect( updater_thread, &QThread::finished, updater, &QObject::deleteLater );
+    QObject::connect( updater_thread, &QThread::finished, updater_thread, &QObject::deleteLater );
+
+    updater_thread->start();
 
     AuthentificationWindow authentification;
     if ( authentification.exec() == QDialog::Rejected )
     {
-        a.quit();
+        app.quit();
         exit( 1 );
     }
 
     MainWindow w( authentification.GetUserData() );
     w.show();
-    return a.exec();
+    return app.exec();
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include <QTableWidget>
 
+#include "FilterHelper.h"
+
 /*
     Plousios source code. Tak172. 2024.
 
@@ -19,15 +21,17 @@ public:
     ~TradingWidget();
 
     void UpdateAssets();
+    void FilterAssets( const Filter & );
 
 signals:
-    void ClickBuy( unsigned );
     void ClickAsset( unsigned );
+    void UpdateBalance();
 
 private slots:
-    void OnClickBuy( unsigned );
     void OnClickAsset( int );
 
 private:
+    void BuyAsset( unsigned, double );
+
     unsigned _user_id;
 };

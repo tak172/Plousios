@@ -73,6 +73,18 @@ void HistoryWidget::UpdateHistory()
     }
 }
 
+void HistoryWidget::FilterHistory( const Filter & filter )
+{
+    DatabaseProcessing::DatabaseManager * db_manager = DatabaseProcessing::DatabaseManager::Instance();
+    QString country_name = db_manager->GetCountryName( filter._country );
+    for ( int row_idx = 0; row_idx < rowCount(); ++row_idx )
+    {
+        bool is_used = item( row_idx, 0 )->text().contains( filter._pattern );
+        is_used = ( is_used && item( row_idx, 1 )->text().contains( country_name ) );
+        setRowHidden( row_idx, is_used );
+    }
+}
+
 void HistoryWidget::OnClickAsset( int row )
 {
     if ( QTableWidgetItem * table_item = item( row, 0 ) )

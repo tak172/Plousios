@@ -64,10 +64,31 @@ void AssetsWidget::UpdateAssets()
         put_for_sale->setText( WToQ( L"Выставить" ) );
         connect( put_for_sale, &QPushButton::clicked, [ id = asset._id, this ]()
         {
-            OnClickPutForSale( id );
+            for ( int row_idx = 0; row_idx < columnCount(); ++row_idx )
+            {
+                QTableWidgetItem * nameTI = item( row_idx, 0 );
+                if ( nameTI->data( Qt::UserRole ).toUInt() == id )
+                {
+                    QTableWidgetItem * price_item = item( row_idx, 2 );
+                    OnClickPutForSale( id, price_item->text().toDouble() );
+                    break;
+                }
+            }
         } );
 
         setCellWidget( rowCount() - 1, 3, put_for_sale );
+    }
+}
+
+void AssetsWidget::FilterAssets( const Filter & filter )
+{
+    DatabaseProcessing::DatabaseManager * db_manager = DatabaseProcessing::DatabaseManager::Instance();
+    QString country_name = db_manager->GetCountryName( filter._country );
+    for ( int row_idx = 0; row_idx < rowCount(); ++row_idx )
+    {
+        bool is_used = item( row_idx, 0 )->text().contains( filter._pattern );
+        is_used = ( is_used && item( row_idx, 1 )->text().contains( country_name ) );
+        setRowHidden( row_idx, is_used );
     }
 }
 
@@ -77,22 +98,23 @@ void AssetsWidget::OnClickAsset( int row )
         emit ClickAsset( table_item->data( Qt::UserRole ).toUInt() );
 }
 
-void AssetsWidget::OnClickPutForSale( unsigned id )
+void AssetsWidget::OnClickPutForSale( unsigned id, double price )
 {
     auto db_manager = DatabaseProcessing::DatabaseManager::Instance();
-    if ( db_manager->PutForSale( id ) == true )
+    if ( db_manager->PutForSale( id, price ) == true )
     {
         UpdateAssets();
         return;
     }
 
     QMessageBox message_box;
-    message_box.setWindowTitle( WToQ( L"Ошибка подключения." ) );
-    message_box.setText( WToQ( L"Ошибка проведения транзакции. Проверьте подключение." ) );
+    message_box.setWindowTitle( WToQ( L"Ошибка стоимости" ) );
+    message_box.setText( WToQ( L"Ошибка проведения транзакции. Цена актива изменилась." ) );
     message_box.setIcon( QMessageBox::Warning );
     message_box.setStandardButtons( QMessageBox::Ok );
     if ( QAbstractButton * ok_button = message_box.button( QMessageBox::Ok ) )
         ok_button->setMinimumWidth( 100 );
 
     message_box.exec();
+    UpdateAssets();
 }

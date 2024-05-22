@@ -255,6 +255,7 @@
     <ClCompile Include="DatabaseManager.cpp" />
     <ClCompile Include="HistoryWidget.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="PriceUpdater.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -270,6 +271,8 @@
   <ItemGroup>
     <ClInclude Include="AddUserWindow.h" />
     <ClInclude Include="AuthentificationWindow.h" />
+    <QtMoc Include="PriceUpdater.h" />
+    <ClInclude Include="FilterHelper.h" />
     <ClInclude Include="UserWindow.h" />
     <QtMoc Include="TradingWidget.h" />
     <QtMoc Include="FilterWidget.h" />

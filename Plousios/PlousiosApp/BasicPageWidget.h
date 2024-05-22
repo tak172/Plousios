@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QSplitter>
+
 #include "DatabaseHelper.h"
+#include "FilterHelper.h"
 /*
     Plousios source code. Tak172. 2024.
 
@@ -42,11 +44,12 @@ public:
     void SetActivePage( PageType );
 
 signals:
-    void BuyAsset( unsigned id );
+    void UpdateBalance();
 
 private slots:
     void OnClickAsset( unsigned id );
-    void OnBuyAsset( unsigned id );
+    void OnBuyAsset();
+    void OnFilterChanged( const Filter & );
 
 private:
     void InitPlot();    // создание и настройка графика
