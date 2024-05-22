@@ -273,6 +273,9 @@
     <ClInclude Include="AuthentificationWindow.h" />
     <QtMoc Include="PriceUpdater.h" />
     <ClInclude Include="FilterHelper.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="resource2.h" />
     <ClInclude Include="UserWindow.h" />
     <QtMoc Include="TradingWidget.h" />
     <QtMoc Include="FilterWidget.h" />
@@ -287,6 +290,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="Resource.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
