@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Widgets">
+      <UniqueIdentifier>{62c9cdaa-debf-42eb-b029-ce2d96f4e624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Database">
+      <UniqueIdentifier>{dd91ec7b-e9e9-4c15-a5c9-4fd905dc6432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpful">
+      <UniqueIdentifier>{b3bca234-7184-4005-8759-4a8d173995e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Database\DatabaseManager">
+      <UniqueIdentifier>{ddb53a7a-1195-4472-8b7d-b7b6cddb3791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Widgets\BasicPageWidget">
+      <UniqueIdentifier>{e790500f-3a1c-41a8-83be-95fda3035df4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{d70b03dd-3830-4ade-af98-7e0f87d2d295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\MainWindow">
+      <UniqueIdentifier>{f94ae2fb-5bee-41fe-8480-0805139c03ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Widgets\TradingWidget">
+      <UniqueIdentifier>{efdcdadd-9e12-47ed-be6b-d75235da0e52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Widgets\HistoryWidget">
+      <UniqueIdentifier>{1df0822c-9711-45a3-be23-31992689c721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Widgets\AssetsWidget">
+      <UniqueIdentifier>{5dfeadc2-19a6-4858-b5aa-6f901a6bd99a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Widgets\FilterWidget">
+      <UniqueIdentifier>{f4fa3f09-33de-452f-a69b-532fa7562a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\UserWindow">
+      <UniqueIdentifier>{9a46646c-3023-4e3b-a64d-cc87cacd93ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\AuthentificationWindow">
+      <UniqueIdentifier>{16407c32-22fe-4059-b11f-61c5b4790138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\AddUserWindow">
+      <UniqueIdentifier>{434ac008-2238-4985-b469-6ced96849b3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Database\PriceUpdater">
+      <UniqueIdentifier>{76dd93f9-e062-41ae-bfd0-017ac0763bc2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\AdoptTools\qcustomplot\qcustomplot.cpp">
+      <Filter>Helpful</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>Windows\MainWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="FilterWidget.cpp">
+      <Filter>Widgets\FilterWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="DatabaseManager.cpp">
+      <Filter>Database\DatabaseManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicPageWidget.cpp">
+      <Filter>Widgets\BasicPageWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryWidget.cpp">
+      <Filter>Widgets\HistoryWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetsWidget.cpp">
+      <Filter>Widgets\AssetsWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="TradingWidget.cpp">
+      <Filter>Widgets\TradingWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="UserWindow.cpp">
+      <Filter>Windows\UserWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="AuthentificationWindow.cpp">
+      <Filter>Windows\AuthentificationWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="AddUserWindow.cpp">
+      <Filter>Windows\AddUserWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="PriceUpdater.cpp">
+      <Filter>Database\PriceUpdater</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="DatabaseManager.h">
+      <Filter>Database\DatabaseManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseHelper.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="UserWindow.h">
+      <Filter>Windows\UserWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="AuthentificationWindow.h">
+      <Filter>Windows\AuthentificationWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="AddUserWindow.h">
+      <Filter>Windows\AddUserWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="FilterHelper.h">
+      <Filter>Widgets\FilterWidget</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="resource2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="..\..\AdoptTools\qcustomplot\qcustomplot.h">
+      <Filter>Helpful</Filter>
+    </QtMoc>
+    <QtMoc Include="MainWindow.h">
+      <Filter>Windows\MainWindow</Filter>
+    </QtMoc>
+    <QtMoc Include="FilterWidget.h">
+      <Filter>Widgets\FilterWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="BasicPageWidget.h">
+      <Filter>Widgets\BasicPageWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="HistoryWidget.h">
+      <Filter>Widgets\HistoryWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="AssetsWidget.h">
+      <Filter>Widgets\AssetsWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="TradingWidget.h">
+      <Filter>Widgets\TradingWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="PriceUpdater.h">
+      <Filter>Database\PriceUpdater</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Resource.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
