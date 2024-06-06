@@ -23,7 +23,7 @@ void PriceUpdater::StartWork()
     while ( QThread::currentThread()->isInterruptionRequested() == false )
     {
         DoWork();
-        QThread::sleep( 60 );
+        QThread::sleep( 2 );
     }
 }
 
