@@ -48,7 +48,7 @@ namespace DatabaseProcessing
         DatabaseManager & operator=( const DatabaseManager & ) = delete;
 
         QSqlDatabase _db; // <-- protected by _mutex
-        std::mutex _mutex;
+        std::recursive_mutex _mutex;
 
         static DatabaseManager * _instance; // <-- protected by _instance_mutex
         static std::mutex _instance_mutex;
